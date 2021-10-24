@@ -53,6 +53,9 @@ class SocialLoginCubit extends Cubit<SocialLoginStates>
         email : email,
         phone : phone,
         uId : value.user?.uid,
+        bio:"Write your bio..",
+        cover:"https://image.freepik.com/free-photo/positive-dark-skinned-young-woman-man-bump-fists-agree-be-one-team-look-happily-each-other-celebrates-completed-task-wear-pink-green-clothes-pose-indoor-have-successful-deal_273609-42756.jpg",
+        image:"https://as1.ftcdn.net/v2/jpg/02/68/62/04/1000_F_268620420_raIDjo1HJvtratuDz5z338yZ9QUcr7lZ.jpg",
         isEmailVerified: false,
       );
       FirebaseFirestore.instance.collection("Users").doc(value.user!.uid).set(model.toMap()).then((value){

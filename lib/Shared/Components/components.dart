@@ -80,6 +80,21 @@ Widget defaultTextForm(
 
 }
 
+PreferredSizeWidget defaultAppBar({
+  required BuildContext context,
+  String? title,
+  List<Widget>? actions,
+  IconData? LeadingIcon,
+})=>AppBar(
+  leading: IconButton(
+    onPressed: ()=>Navigator.pop(context),
+    icon:Icon(LeadingIcon),
+  ),
+  titleSpacing: 0.0,
+  title:Text(title.toString()),
+  actions: actions,
+);
+
 void showToast({
   required String text,
   required ToastStates state,})=>

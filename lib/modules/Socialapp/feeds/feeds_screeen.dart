@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/Themes/icon_broken.dart';
 import 'package:social_app/layout/Cubit/cubit.dart';
 
+import 'package:social_app/modules/Socialapp/NewPost/new_post.dart';
+
 class FeedScreen extends StatelessWidget {
 
   @override
@@ -29,10 +31,11 @@ class FeedScreen extends StatelessWidget {
                 ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text("Communicate with friends",
-                    style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                      color:Colors.white,
-                    ),
+                    child: Text(
+                      "Communicate with friends",
+                      style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                            color: Colors.white,
+                          ),
                     ),
                   ),
                 ]
@@ -53,9 +56,16 @@ class FeedScreen extends StatelessWidget {
                   SizedBox(width: 30),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      // decoration: Border
-                        child: Text("What's on your mind ${Cubit.model?.name} ",style: Theme.of(context).textTheme.caption,)),
+                    child: InkWell(
+                      onTap: (){
+                        Navigator.push(context,MaterialPageRoute(
+                            builder: (BuildContext context)=>NewPostScreen(),)
+                        );
+                      },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 7.0),
+                          child: Text("What's on your mind ${Cubit.model?.name} ",style: Theme.of(context).textTheme.caption,),
+                        )),
                   ),
                 ],),
               ),
@@ -66,9 +76,7 @@ class FeedScreen extends StatelessWidget {
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               separatorBuilder: (context , index) => SizedBox(height: 8.0,),
-            )
-
-
+            ),
           ],
         ),
       ),
