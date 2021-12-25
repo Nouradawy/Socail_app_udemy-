@@ -119,7 +119,7 @@ class SettingsScreen extends StatelessWidget {
               children: [
                 Expanded(child: OutlinedButton(onPressed: (){}, child: Text("Add Photos"))),
                 OutlinedButton(onPressed: (){
-                  Navigator.push(context,MaterialPageRoute(builder: (BuildContext context)=>EditProfileScreen(),));
+                  Navigator.push(context,MaterialPageRoute(builder: (BuildContext context)=>EditProfileScreen()));
                 }, child: Icon(IconBroken.Edit,size:16.0)),
               ],
             ),

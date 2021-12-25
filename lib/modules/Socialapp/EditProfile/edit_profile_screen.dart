@@ -1,5 +1,8 @@
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/Shared/Components/components.dart';
 import 'package:social_app/Themes/icon_broken.dart';
@@ -14,8 +17,10 @@ class EditProfileScreen extends StatelessWidget {
     var Cubit = SocialCubit.get(context);
     var NameController =TextEditingController();
     var BioController = TextEditingController();
-    NameController.text = Cubit.model!.name!;
-    BioController.text = Cubit.model!.bio!;
+    var phoneController = TextEditingController();
+    var emailController = TextEditingController();
+    phoneController.text = Cubit.model!.phone!;
+    emailController.text = Cubit.model!.email!;
 
     return Scaffold(
       appBar:defaultAppBar(
@@ -23,7 +28,9 @@ class EditProfileScreen extends StatelessWidget {
         title:"Edit Profile",
         LeadingIcon: IconBroken.Arrow___Left_2,
         actions: [
-          TextButton(onPressed: (){},
+          TextButton(onPressed: (){
+            Cubit.updateUser(name: NameController.text , bio: BioController.text,phone: phoneController.text , email: emailController.text,);
+          },
               child: Text("UPDATE",
                 style: TextStyle(color:Colors.white)
                 ,)),
@@ -32,7 +39,14 @@ class EditProfileScreen extends StatelessWidget {
         ]
       ),
       body: BlocConsumer<SocialCubit,SocialStates>(
-      listener: (context , state) {},
+      listener: (context , state) {
+        if(state is! SocialUpdateUserLoadingState)
+          {
+            NameController.text = Cubit.model!.name!;
+            BioController.text = Cubit.model!.bio!;
+
+          }
+      },
       builder:(context , states)=> Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -48,7 +62,7 @@ class EditProfileScreen extends StatelessWidget {
                     child: Card(
                         clipBehavior: Clip.antiAliasWithSaveLayer,
                         elevation: 7,
-                        child:Image(image: NetworkImage(Cubit.model!.cover.toString()),
+                        child:Image(image: Cubit.CoverImage == null ? NetworkImage(Cubit.model!.cover.toString()) : ImageSwap(Cubit.CoverImage),
                           fit: BoxFit.cover,
                           height: 170,
                           width: double.infinity,
@@ -62,7 +76,9 @@ class EditProfileScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(5.0),
                     child: Align(
                       alignment: AlignmentDirectional.topEnd,
-                      child: IconButton(onPressed:(){},icon:Icon(IconBroken.Edit,),color: Colors.white,),
+                      child: IconButton(onPressed:(){
+                        Cubit.getCoverImage();
+                      },icon:Icon(IconBroken.Edit,),color: Colors.white,),
                     ),
                   ),
                 ),
@@ -75,12 +91,13 @@ class EditProfileScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(3.0),
                     child: CircleAvatar(
                       radius: 60,
-                      backgroundImage: NetworkImage(Cubit.model!.image.toString()
-                      ),
+                      backgroundImage: Cubit.profileImage == null ? NetworkImage(Cubit.model!.image.toString()) : ImageSwap(Cubit.profileImage),
                     ),
                   ),
                 ),
-                IconButton(onPressed:(){},icon:Icon(IconBroken.Edit,),color: Colors.white,),
+                IconButton(onPressed:(){
+                  Cubit.getProfileImage();
+                },icon:Icon(IconBroken.Edit,),color: Colors.white,),
               ],
             ),
             Container(
@@ -118,4 +135,6 @@ class EditProfileScreen extends StatelessWidget {
     ),
     );
   }
+
+  ImageProvider<Object> ImageSwap(profileImage) => FileImage(profileImage);
 }
